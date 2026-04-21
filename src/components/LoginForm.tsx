@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
+import { setUser } from '../utils/Storage';
 
 type LoginFormData = {
     userName: string;
@@ -20,7 +21,8 @@ const LoginForm = () => {
             alert("Please enter username and password");
             return;
         }
-        localStorage.setItem('userName', userName);
+        //localStorage.setItem('userName', userName);
+        setUser(userName);
         navigate('/logout');
     }
 

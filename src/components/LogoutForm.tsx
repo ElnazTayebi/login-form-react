@@ -1,13 +1,14 @@
 import { useNavigate } from "react-router-dom";
-
+import { removeUser, getUser } from "../utils/Storage";
 
 const LogoutForm = () => {
     const navigate = useNavigate();
 
-    const userName = localStorage.getItem('userName');
+    const userName = getUser();
     const handleLogout = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        localStorage.removeItem('userName');
+        //localStorage.removeItem('userName');
+        removeUser();
         navigate('/');
     };
 
