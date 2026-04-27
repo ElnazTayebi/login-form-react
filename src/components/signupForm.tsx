@@ -1,19 +1,16 @@
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import { getUsersFromLocalStorage, setCurrentUser } from "../utils/storage";
+import { addUserInLocalstorage, isUserExist } from "../utils/storage";
 import { Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
-import type { User } from "../utils/storage";
 
 type LoginFormData = {
   userName: string;
   password: string;
 };
 
-const LoginForm = () => {
+const SignupForm = () => {
   const [showPassword, setShowPassword] = useState(false);
-  const location = useLocation();
-  const state = location.state as LoginFormData | undefined;
   const {
     register,
     handleSubmit,
@@ -24,32 +21,32 @@ const LoginForm = () => {
   const onSubmit = (data: LoginFormData) => {
     const { userName, password } = data;
 
-    const users: User[] = getUsersFromLocalStorage();
-    const user = users.find(
-      (u) =>
-        u.userName.toLowerCase === userName.trim().toLocaleLowerCase &&
-        u.password === password,
-    );
-
-    if (!user) {
-      alert("Invalid username or password ");
+    if (isUserExist(userName.trim())) {
+      alert("User already exist");
       return;
     }
-    setCurrentUser(user.userName);
-    navigate("/logout");
+    addUserInLocalstorage({ userName, password });
+    alert("Signup successful");
+    navigate("/", {
+      state: {
+        userName,
+        password,
+      },
+    });
   };
-
-  const handleSignup = () => {
-    navigate("/signup");
+  const handleLogin = () => {
+    navigate("/");
   };
 
   return (
-    <div className="min-h-screen bg-green-200 flex items-center justify-center">
+    <div className="min-h-screen bg-red-200 flex items-center justify-center">
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="bg-white p-6 rounded-lg shadow-md w-80 flex flex-col gap-3 mx-auto mt-10"
       >
-        {state?.userName && <p>{state.userName} welcome to login </p>}
+        <p className="text-center font-semibold text-lg">
+          Welcome to the Signup Page
+        </p>
 
         <label htmlFor="userName">Username</label>
         <input
@@ -77,26 +74,26 @@ const LoginForm = () => {
           >
             {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
           </button>
+          {errors.password && (
+            <p className="text-red-500">{errors.password.message}</p>
+          )}
         </div>
-        {errors.password && (
-          <p className="text-red-500">{errors.password.message}</p>
-        )}
         <button
           type="submit"
           className="bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 transition duration-200"
         >
-          Login
+          Signup
         </button>
         <button
           type="button"
-          onClick={handleSignup}
+          onClick={handleLogin}
           className="bg-white text-black py-2 rounded-md hover:bg-blue-100 transition duration-200 border border-gray-300"
         >
-          Signup
+          back to Login
         </button>
       </form>
     </div>
   );
 };
 
-export default LoginForm;
+export default SignupForm;
