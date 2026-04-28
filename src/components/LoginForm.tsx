@@ -3,12 +3,7 @@ import { useForm } from "react-hook-form";
 import { getUsersFromLocalStorage, setCurrentUser } from "../utils/storage";
 import { Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
-import type { User } from "../utils/storage";
-
-type LoginFormData = {
-  userName: string;
-  password: string;
-};
+import type { User, LoginForm } from "../entities/user.types";
 
 const LoginForm = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -17,10 +12,10 @@ const LoginForm = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<LoginFormData>();
+  } = useForm<LoginForm>();
   const navigate = useNavigate();
 
-  const onSubmit = (data: LoginFormData) => {
+  const onSubmit = (data: LoginForm) => {
     const { userName, password } = data;
 
     const users: User[] = getUsersFromLocalStorage();

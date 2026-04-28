@@ -3,11 +3,7 @@ import { useForm } from "react-hook-form";
 import { addUserInLocalstorage, isUserExist } from "../utils/storage";
 import { Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
-
-type LoginFormData = {
-  userName: string;
-  password: string;
-};
+import type { LoginForm } from "../entities/user.types";
 
 const SignupForm = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -15,10 +11,10 @@ const SignupForm = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<LoginFormData>();
+  } = useForm<LoginForm>();
   const navigate = useNavigate();
 
-  const onSubmit = (data: LoginFormData) => {
+  const onSubmit = (data: LoginForm) => {
     const { userName, password } = data;
 
     if (isUserExist(userName.trim())) {

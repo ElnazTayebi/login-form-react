@@ -1,7 +1,4 @@
-export type User = {
-  userName: string;
-  password: string;
-};
+import type { User } from "../entities/user.types";
 
 //get all users
 export const getUsersFromLocalStorage = (): User[] => {
