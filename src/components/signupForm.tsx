@@ -27,12 +27,7 @@ const SignupForm = () => {
     }
     addUserInLocalstorage({ userName, password });
     alert("Signup successful");
-    navigate("/", {
-      state: {
-        userName,
-        password,
-      },
-    });
+    navigate("/");
   };
   const handleLogin = () => {
     navigate("/");

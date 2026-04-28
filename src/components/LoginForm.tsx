@@ -1,4 +1,4 @@
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { getUsersFromLocalStorage, setCurrentUser } from "../utils/storage";
 import { Eye, EyeOff } from "lucide-react";
@@ -12,8 +12,7 @@ type LoginFormData = {
 
 const LoginForm = () => {
   const [showPassword, setShowPassword] = useState(false);
-  const location = useLocation();
-  const state = location.state as LoginFormData | undefined;
+
   const {
     register,
     handleSubmit,
@@ -27,7 +26,7 @@ const LoginForm = () => {
     const users: User[] = getUsersFromLocalStorage();
     const user = users.find(
       (u) =>
-        u.userName.toLowerCase === userName.trim().toLocaleLowerCase &&
+        u.userName.toLowerCase() === userName.trim().toLowerCase() &&
         u.password === password,
     );
 
@@ -49,7 +48,7 @@ const LoginForm = () => {
         onSubmit={handleSubmit(onSubmit)}
         className="bg-white p-6 rounded-lg shadow-md w-80 flex flex-col gap-3 mx-auto mt-10"
       >
-        {state?.userName && <p>{state.userName} welcome to login </p>}
+        <p className="text-center font-semibold text-lg">welcome to login </p>
 
         <label htmlFor="userName">Username</label>
         <input
