@@ -1,16 +1,15 @@
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { getUsersFromLocalStorage, setCurrentUser } from "../utils/storage";
-import { Eye, EyeOff } from "lucide-react";
-import { useState } from "react";
+
 import type { User, LoginForm } from "../entities/user.types";
+import InputField from "../widget/InputField";
 
 const LoginForm = () => {
-  const [showPassword, setShowPassword] = useState(false);
-
   const {
     register,
     handleSubmit,
+    setError,
     formState: { errors },
   } = useForm<LoginForm>();
   const navigate = useNavigate();
@@ -26,7 +25,7 @@ const LoginForm = () => {
     );
 
     if (!user) {
-      alert("Invalid username or password ");
+      setError("userName", { message: "Invalid username or password " });
       return;
     }
     setCurrentUser(user.userName);
@@ -45,36 +44,21 @@ const LoginForm = () => {
       >
         <p className="text-center font-semibold text-lg">welcome to login </p>
 
-        <label htmlFor="userName">Username</label>
-        <input
-          type="text"
-          id="userName"
-          {...register("userName", { required: "Username is required" })}
-          className="border border-gray-300 rounded-md py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        <InputField
+          label="Username"
+          name={"userName"}
+          register={register}
+          error={errors.userName?.message}
+          variant="text"
         />
-        {errors.userName && (
-          <p className="text-red-500">{errors.userName.message}</p>
-        )}
+        <InputField
+          label="Password"
+          name={"password"}
+          register={register}
+          error={errors.password?.message}
+          variant="password"
+        />
 
-        <label htmlFor="password">Password</label>
-        <div className="relative">
-          <input
-            type={showPassword ? "text" : "password"}
-            id="password"
-            {...register("password", { required: "Password is required" })}
-            className="w-full pr-10 border border-gray-300 rounded-md py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-          <button
-            type="button"
-            onClick={() => setShowPassword((prev) => !prev)}
-            className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500"
-          >
-            {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
-          </button>
-        </div>
-        {errors.password && (
-          <p className="text-red-500">{errors.password.message}</p>
-        )}
         <button
           type="submit"
           className="bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 transition duration-200"
