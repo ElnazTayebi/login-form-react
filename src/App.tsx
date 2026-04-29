@@ -1,8 +1,8 @@
 import Login from "./pages/loginPage";
 import { Route, Routes } from "react-router-dom";
 import "./App.css";
-import MainLayout from "./layouts/MainLayout";
-import LogoutForm from "./components/LogoutForm";
+import MainLayout from "./layouts/mainLayout";
+import LogoutForm from "./components/logoutForm";
 import SignupPage from "./pages/signupPage";
 
 function App() {
