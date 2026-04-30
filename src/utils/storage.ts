@@ -38,3 +38,12 @@ export const getCurrentUser = () => {
 export const removeCurrentUser = () => {
   localStorage.removeItem("currentUser");
 };
+
+export const getThemeFromLocalStorage = (): "light" | "dark" => {
+  const theme = localStorage.getItem("theme");
+  return theme === "dark" ? "dark" : "light";
+};
+
+export const setThemeToLocalStorage = (theme: "light" | "dark") => {
+  localStorage.setItem("theme", theme);
+};

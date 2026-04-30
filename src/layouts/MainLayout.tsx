@@ -5,7 +5,7 @@ const MainLayout = () => {
   const {toggleTheme} = useTheme()
   return (
     <div
-    className="bg-white dark:bg-black text-black dark:text-white">
+    className=" dark:bg-gray-900  text-black dark:text-white">
       <button onClick={toggleTheme}>🌙 / ☀️</button>
       <Outlet />
     </div>

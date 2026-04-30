@@ -30,10 +30,10 @@ const SignupForm = () => {
   };
 
   return (
-    <div className="min-h-screen bg-red-200 flex items-center justify-center">
+    <div className="min-h-screen bg-red-200 dark:bg-gray-900 flex items-center justify-center">
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="bg-white p-6 rounded-lg shadow-md w-80 flex flex-col gap-3 mx-auto mt-10"
+        className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md w-80 flex flex-col gap-3 mx-auto mt-10"
       >
         <p className="text-center font-semibold text-lg">
           Welcome to the Signup Page
