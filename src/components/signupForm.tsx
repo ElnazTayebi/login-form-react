@@ -4,6 +4,7 @@ import { addUserInLocalstorage, isUserExist } from "../utils/storage";
 
 import type { LoginForm } from "../entities/user.types";
 import InputField from "../widget/InputField";
+import Button from "../widget/Button";
 
 const SignupForm = () => {
   const {
@@ -53,19 +54,13 @@ const SignupForm = () => {
           error={errors.password?.message}
           variant="password"
         />
-        <button
-          type="submit"
-          className="bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 transition duration-200"
-        >
+
+        <Button type={"submit"} variant="primary">
           Signup
-        </button>
-        <button
-          type="button"
-          onClick={handleLogin}
-          className="bg-white text-black py-2 rounded-md hover:bg-blue-100 transition duration-200 border border-gray-300"
-        >
-          back to Login
-        </button>
+        </Button>
+        <Button type={"button"} variant="secondary" onClick={handleLogin}>
+          Back to login
+        </Button>
       </form>
     </div>
   );

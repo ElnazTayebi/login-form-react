@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { getCurrentUser, removeCurrentUser } from "../utils/storage";
 import { useEffect } from "react";
+import Button from "../widget/Button";
 
 const LogoutForm = () => {
   const navigate = useNavigate();
@@ -21,13 +22,10 @@ const LogoutForm = () => {
         <p className="text-center font-semibold text-lg">
           {userName} welcome to Logout Page
         </p>
-        <button
-          type="submit"
-          onClick={handleLogout}
-          className="bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 transition duration-200"
-        >
+
+        <Button type={"button"} variant="primary" onClick={handleLogout}>
           Logout
-        </button>
+        </Button>
       </form>
     </div>
   );

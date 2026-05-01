@@ -4,6 +4,7 @@ import { getUsersFromLocalStorage, setCurrentUser } from "../utils/storage";
 
 import type { User, LoginForm } from "../entities/user.types";
 import InputField from "../widget/InputField";
+import Button from "../widget/Button";
 
 const LoginForm = () => {
   const {
@@ -58,20 +59,12 @@ const LoginForm = () => {
           error={errors.password?.message}
           variant="password"
         />
-
-        <button
-          type="submit"
-          className="bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 transition duration-200"
-        >
+        <Button type={"submit"} variant="primary">
           Login
-        </button>
-        <button
-          type="button"
-          onClick={handleSignup}
-          className="bg-white text-black py-2 rounded-md hover:bg-blue-100 transition duration-200 border border-gray-300"
-        >
+        </Button>
+        <Button type={"button"} variant="secondary" onClick={handleSignup}>
           Signup
-        </button>
+        </Button>
       </form>
     </div>
   );
