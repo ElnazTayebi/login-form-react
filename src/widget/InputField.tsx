@@ -8,6 +8,8 @@ type InputFieldProps = {
   register: UseFormRegister<LoginForm>;
   error?: string;
   variant: "text" | "password";
+  success?: string;
+  onChange?: () => void;
 };
 
 const InputField = ({
@@ -16,6 +18,8 @@ const InputField = ({
   register,
   error,
   variant,
+  success,
+  onChange,
 }: InputFieldProps) => {
   const [showPassword, setShowPassword] = useState(false);
   let inputType = "text";
@@ -34,7 +38,9 @@ const InputField = ({
       <div className="relative">
         <input
           id={name}
-          {...register(name)}
+          {...register(name, {
+            onChange: () => {onChange?.()},
+          })}
           className={`border rounded-md py-2 px-3 w-full pr-10 focus:outline-none focus:ring-2 focus:ring-blue-500 ${error ? "border-red-500  focus:ring-red-500 bg-red-100" : "border-gray-300  focus:ring-blue-500 bg-white"}`}
           type={inputType}
         />
@@ -49,6 +55,9 @@ const InputField = ({
         )}
       </div>
       {error && <p className="text-red-500">{error}</p>}
+      {!error && success && (
+        <p className="text-green-500">{success}</p>
+      )}
     </div>
   );
 };

@@ -5,22 +5,51 @@ import { addUserInLocalstorage, isUserExist } from "../utils/storage";
 import type { LoginForm } from "../entities/user.types";
 import InputField from "../widget/InputField";
 import Button from "../widget/Button";
+import { useState } from "react";
 
 const SignupForm = () => {
   const {
     register,
     handleSubmit,
     setError,
+    clearErrors,
+    getValues,
+
     formState: { errors },
   } = useForm<LoginForm>();
   const navigate = useNavigate();
-
+  const [successMsg, setSuccessMsg] = useState("");
+  const handleCheckUsername = () => {
+    const userName = getValues("userName");
+    if (!userName || userName.trim() === "") {
+      setError("userName", { message: "Username is required" });
+      setSuccessMsg("");
+      return;
+    }
+    if (isUserExist(userName.trim())) {
+      setError("userName", { message: "Username already exist" });
+      setSuccessMsg("");
+      return;
+    } else {
+      clearErrors("userName");
+      setSuccessMsg("Username is available");
+    }
+  };
   const onSubmit = (data: LoginForm) => {
     const { userName, password } = data;
 
+    if (!userName || userName.trim() === "") {
+      setError("userName", { message: "Username is required" });
+      setSuccessMsg("");
+      return;
+    }
     if (isUserExist(userName.trim())) {
       setError("userName", { message: "Username already exist" });
+      setSuccessMsg("");
       return;
+    } else {
+      clearErrors("userName");
+      setSuccessMsg("Username is available");
     }
     addUserInLocalstorage({ userName, password });
     alert("Signup successful");
@@ -46,7 +75,16 @@ const SignupForm = () => {
           register={register}
           error={errors.userName?.message}
           variant="text"
+          success={successMsg}
+          onChange={() => setSuccessMsg("")}
         />
+        <Button
+          type={"button"}
+          variant="secondary"
+          onClick={handleCheckUsername}
+        >
+          Check Username
+        </Button>
         <InputField
           label="Password"
           name={"password"}
