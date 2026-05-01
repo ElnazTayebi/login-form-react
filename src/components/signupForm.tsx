@@ -5,7 +5,7 @@ import { addUserInLocalstorage, isUserExist } from "../utils/storage";
 import type { LoginForm } from "../entities/user.types";
 import InputField from "../widget/InputField";
 import Button from "../widget/Button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const SignupForm = () => {
   const {
@@ -13,28 +13,39 @@ const SignupForm = () => {
     handleSubmit,
     setError,
     clearErrors,
-    getValues,
-
+    watch,
     formState: { errors },
   } = useForm<LoginForm>();
   const navigate = useNavigate();
   const [successMsg, setSuccessMsg] = useState("");
-  const handleCheckUsername = () => {
-    const userName = getValues("userName");
-    if (!userName || userName.trim() === "") {
-      setError("userName", { message: "Username is required" });
-      setSuccessMsg("");
-      return;
-    }
-    if (isUserExist(userName.trim())) {
-      setError("userName", { message: "Username already exist" });
-      setSuccessMsg("");
-      return;
-    } else {
+  const userName = watch("userName");
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (!userName) {
+        setSuccessMsg("");
+        return;
+      }
+      if (userName.trim().length < 4) {
+        setError("userName", {
+          message: "Username must be at least 4 charakters",
+        });
+        return;
+      }
+      if (isUserExist(userName.trim())) {
+        setError("userName", {
+          message: "Username already exist",
+        });
+
+        setSuccessMsg("");
+        return;
+      }
       clearErrors("userName");
       setSuccessMsg("Username is available");
-    }
-  };
+    }, 500);
+    return () => clearTimeout(timer);
+  }, [userName]);
+
   const onSubmit = (data: LoginForm) => {
     const { userName, password } = data;
 
@@ -76,15 +87,15 @@ const SignupForm = () => {
           error={errors.userName?.message}
           variant="text"
           success={successMsg}
-          onChange={() => setSuccessMsg("")}
+          rules={{
+            required: "Username is required",
+            minLength: {
+              value: 4,
+              message: "Username must be at least 4 charakter",
+            },
+          }}
         />
-        <Button
-          type={"button"}
-          variant="secondary"
-          onClick={handleCheckUsername}
-        >
-          Check Username
-        </Button>
+
         <InputField
           label="Password"
           name={"password"}

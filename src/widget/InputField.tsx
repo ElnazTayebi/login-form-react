@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
-import type { UseFormRegister } from "react-hook-form";
+import type { UseFormRegister, RegisterOptions } from "react-hook-form";
 import type { LoginForm } from "../entities/user.types";
 type InputFieldProps = {
   label: string;
@@ -10,6 +10,7 @@ type InputFieldProps = {
   variant: "text" | "password";
   success?: string;
   onChange?: () => void;
+  rules?: RegisterOptions<LoginForm, keyof LoginForm>
 };
 
 const InputField = ({
@@ -19,6 +20,7 @@ const InputField = ({
   error,
   variant,
   success,
+  rules,
   onChange,
 }: InputFieldProps) => {
   const [showPassword, setShowPassword] = useState(false);
@@ -39,6 +41,7 @@ const InputField = ({
         <input
           id={name}
           {...register(name, {
+            ...rules,
             onChange: () => {onChange?.()},
           })}
           className={`border rounded-md py-2 px-3 w-full pr-10 focus:outline-none focus:ring-2 focus:ring-blue-500 ${error ? "border-red-500  focus:ring-red-500 bg-red-100" : "border-gray-300  focus:ring-blue-500 bg-white"}`}
