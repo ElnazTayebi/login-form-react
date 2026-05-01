@@ -18,7 +18,9 @@ const SignupForm = () => {
   } = useForm<LoginForm>();
   const navigate = useNavigate();
   const [successMsg, setSuccessMsg] = useState("");
+  const [passwordMsg, setPasswordMsg] = useState("");
   const userName = watch("userName");
+  const password = watch("password");
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -46,14 +48,30 @@ const SignupForm = () => {
     return () => clearTimeout(timer);
   }, [userName]);
 
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (!password) {
+        setPasswordMsg("");
+        return;
+      }
+      if (password.trim().length < 6) {
+        setPasswordMsg("Password is too short");
+        return;
+      }
+      const hasLetter = /[A-Za-z]/.test(password);
+      const hasNumber = /\d/.test(password);
+      if (!hasLetter || !hasNumber) {
+        setPasswordMsg("Use letter and number");
+        return;
+      }
+      setPasswordMsg("Strong password")
+    
+    },500);
+    return () => clearTimeout(timer)
+  }, [password]);
   const onSubmit = (data: LoginForm) => {
     const { userName, password } = data;
 
-    if (!userName || userName.trim() === "") {
-      setError("userName", { message: "Username is required" });
-      setSuccessMsg("");
-      return;
-    }
     if (isUserExist(userName.trim())) {
       setError("userName", { message: "Username already exist" });
       setSuccessMsg("");
@@ -102,6 +120,7 @@ const SignupForm = () => {
           register={register}
           error={errors.password?.message}
           variant="password"
+          success={passwordMsg}
         />
 
         <Button type={"submit"} variant="primary">

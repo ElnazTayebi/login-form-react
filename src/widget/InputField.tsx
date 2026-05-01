@@ -42,7 +42,7 @@ const InputField = ({
           id={name}
           {...register(name, {
             ...rules,
-            onChange: () => {onChange?.()},
+            onChange: () => {onChange?.() },
           })}
           className={`border rounded-md py-2 px-3 w-full pr-10 focus:outline-none focus:ring-2 focus:ring-blue-500 ${error ? "border-red-500  focus:ring-red-500 bg-red-100" : "border-gray-300  focus:ring-blue-500 bg-white"}`}
           type={inputType}
